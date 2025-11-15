@@ -147,7 +147,7 @@ interface InsightsPanelProps {
 
 Add to `.env`:
 ```env
-GROQ_API_KEY=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
+GROQ_API_KEY=YOUR-API-KEY
 ```
 
 ---
