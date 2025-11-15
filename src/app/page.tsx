@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FolderKanban, ListTodo, Users, Plus, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
+import { InsightsPanel } from "@/components/workspace/insights-panel";
 
 interface Project {
   id: number;
@@ -150,6 +151,24 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Insights Panel */}
+        {stats && stats.recentProjects.length > 0 && (
+          <div className="mb-8">
+            <InsightsPanel 
+              content={{
+                projects: stats.recentProjects,
+                stats: {
+                  totalProjects: stats.totalProjects,
+                  totalTasks: stats.totalTasks,
+                  totalTeamMembers: stats.totalTeamMembers,
+                  averageProgress: stats.averageProgress
+                }
+              }}
+              contentLabel="workspace data"
+            />
+          </div>
+        )}
 
         {/* Recent Projects */}
         <Card>

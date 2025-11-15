@@ -32,7 +32,7 @@ Your job:
 4. Suggest next steps the user should take.
 5. Generate a priority breakdown (High, Medium, Low).
 6. Give 3 alternate, improved versions of the content (rewrites).
-7. Output everything in clean JSON with the following schema:
+7. Output ONLY valid JSON with the following schema (no markdown, no code blocks):
 
 {
   "summary": [],
@@ -47,7 +47,7 @@ Your job:
   "alternate_versions": []
 }`;
 
-    const userPrompt = `Analyze the following workspace data and provide insights:\n\n${JSON.stringify(content, null, 2)}`;
+    const userPrompt = `Analyze the following workspace data and provide insights:\n\n${JSON.stringify(content, null, 2)}\n\nRespond with ONLY valid JSON, no markdown formatting.`;
 
     // Call Groq API
     const groqResponse = await fetch(
@@ -64,8 +64,9 @@ Your job:
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
           ],
-          temperature: 0.7,
+          temperature: 0.5,
           max_tokens: 2000,
+          response_format: { type: "json_object" }
         }),
       }
     );
@@ -92,21 +93,50 @@ Your job:
     // Parse the JSON response from Groq
     let insights;
     try {
-      // Extract JSON from markdown code blocks if present
-      const jsonMatch = insightsText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-      const jsonText = jsonMatch ? jsonMatch[1] : insightsText;
-      insights = JSON.parse(jsonText);
+      // Try direct parse first
+      insights = JSON.parse(insightsText);
+      
+      // Validate structure
+      if (!insights.summary) insights.summary = [];
+      if (!insights.issues_detected) insights.issues_detected = [];
+      if (!insights.recommendations) insights.recommendations = [];
+      if (!insights.next_steps) insights.next_steps = [];
+      if (!insights.priority_breakdown) {
+        insights.priority_breakdown = { high: [], medium: [], low: [] };
+      }
+      if (!insights.alternate_versions) insights.alternate_versions = [];
+      
     } catch (parseError) {
       console.error("Failed to parse insights JSON:", parseError);
-      // Return a fallback structure
-      insights = {
-        summary: [insightsText.substring(0, 200)],
-        issues_detected: [],
-        recommendations: [],
-        next_steps: [],
-        priority_breakdown: { high: [], medium: [], low: [] },
-        alternate_versions: [],
-      };
+      console.error("Raw response:", insightsText);
+      
+      // Fallback: try to extract JSON from markdown code blocks
+      const jsonMatch = insightsText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (jsonMatch) {
+        try {
+          insights = JSON.parse(jsonMatch[1]);
+        } catch {
+          // If still fails, return generic structure
+          insights = {
+            summary: ["Analysis completed. Please try again for detailed insights."],
+            issues_detected: [],
+            recommendations: [],
+            next_steps: [],
+            priority_breakdown: { high: [], medium: [], low: [] },
+            alternate_versions: [],
+          };
+        }
+      } else {
+        // Last resort fallback
+        insights = {
+          summary: [insightsText.substring(0, 300)],
+          issues_detected: [],
+          recommendations: [],
+          next_steps: [],
+          priority_breakdown: { high: [], medium: [], low: [] },
+          alternate_versions: [],
+        };
+      }
     }
 
     return NextResponse.json(insights);

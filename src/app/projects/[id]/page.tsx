@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { TaskList } from "@/components/workspace/task-list";
 import { TaskDialog } from "@/components/workspace/task-dialog";
+import { InsightsPanel } from "@/components/workspace/insights-panel";
 import { ArrowLeft, Plus, Pencil, Calendar } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -289,7 +290,29 @@ export default function ProjectDetailPage() {
       </header>
 
       {/* Tasks Section */}
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-6 py-8 space-y-6">
+        {/* AI Insights Panel */}
+        {tasks.length > 0 && (
+          <InsightsPanel 
+            content={{
+              project: {
+                name: project.name,
+                status: project.status,
+                progress: project.progress,
+                description: project.description
+              },
+              tasks: tasks,
+              stats: {
+                totalTasks: tasks.length,
+                completedTasks: completedTasks,
+                incompleteTasks: tasks.length - completedTasks,
+                taskCompletionRate: taskCompletionRate
+              }
+            }}
+            contentLabel="project tasks"
+          />
+        )}
+
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
