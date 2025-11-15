@@ -1,28 +1,3 @@
-### Project: VZNX Mini — Project & Team Dashboard
-Applicant: Utsav Mishra
-
-Email: utsavmishraa005@gmail.com
-
-
-### [Demo](https://vznx-project-management-prototype.vercel.app/)
-
-### Summary
-
-A small, clean prototype that demonstrates project, task and team management for an architecture-studio-style workspace. Focus is on simple data flow, clarity and maintainable structure rather than on visual polish.
-
-Core features implemented:
-
-Project dashboard with name, status and progress bar
-
-Add / edit / delete projects
-
-Per-project task list with complete/incomplete toggle
-
-Project progress optionally updates when all tasks complete
-
-Team overview showing members and task counts (with capacity indicator)
-
-
 # Local Setup Guide - VZNX Workspace Management Platform
 
 This guide will help you set up and run the VZNX Technical Challenge project on your local machine.
@@ -40,8 +15,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone 
-cd vznx-workspace-management-prototype
+git clone <your-repository-url>
+cd vznx-workspace-platform
 ```
 
 ### 2. Install Dependencies
@@ -267,8 +242,8 @@ bun run dev
 ## 📞 Support
 
 For issues or questions about this technical challenge submission:
-- **Candidate**: Utsav Mishra
-- **Email**: utsavmishraa005@gmail.com
+- **Candidate**: [Your Name]
+- **Email**: [Your Email]
 - **Challenge**: VZNX Developer Technical Challenge
 
 ## 🎯 Challenge Completion
