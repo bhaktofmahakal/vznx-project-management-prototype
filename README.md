@@ -5,7 +5,7 @@ Email: utsavmishraa005@gmail.com
 
 
 ### [Demo](https://vznx-project-management-prototype.vercel.app/)
-### New Features 0n 
+### New Features 0n [Features](https://github.com/bhaktofmahakal/vznx-project-management-prototype/blob/main/AI-INSIGHTS-FEATURE.md)
 
 ### Summary
 
