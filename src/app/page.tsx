@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FolderKanban, ListTodo, Users, Plus, TrendingUp } from "lucide-react";
+import { FolderKanban, ListTodo, Users, Plus, TrendingUp, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { InsightsPanel } from "@/components/workspace/insights-panel";
+import { GlobalSearch } from "@/components/workspace/global-search";
 
 interface Project {
   id: number;
@@ -89,17 +90,32 @@ export default function Home() {
       {/* Header */}
       <header className="border-b bg-card">
         <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Workspace Dashboard</h1>
-              <p className="text-muted-foreground mt-1">Manage your projects, tasks, and team</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight">Workspace Dashboard</h1>
+                <p className="text-muted-foreground mt-1">Manage your projects, tasks, and team</p>
+              </div>
+              <div className="flex gap-2">
+                <Link href="/analytics">
+                  <Button variant="outline" size="lg" className="gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Analytics
+                  </Button>
+                </Link>
+                <Link href="/projects">
+                  <Button size="lg" className="gap-2">
+                    <Plus className="h-5 w-5" />
+                    New Project
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <Link href="/projects">
-              <Button size="lg" className="gap-2">
-                <Plus className="h-5 w-5" />
-                New Project
-              </Button>
-            </Link>
+            
+            {/* Global Search */}
+            <div className="flex justify-center">
+              <GlobalSearch />
+            </div>
           </div>
         </div>
       </header>
@@ -255,21 +271,23 @@ export default function Home() {
             </Card>
           </Link>
 
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <ListTodo className="h-6 w-6 text-primary" />
+          <Link href="/analytics">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <BarChart3 className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle>Analytics</CardTitle>
                 </div>
-                <CardTitle>All Tasks</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {stats?.totalTasks || 0} tasks across all projects
-              </p>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  View detailed charts and insights
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </main>
     </div>
